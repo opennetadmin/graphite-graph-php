@@ -76,12 +76,12 @@ class Graphite_GraphBuilder {
    * @param string $service Name of service
    * @param string $data Data collection of interest
    * @return Graphite_GraphBuilder Self, for message chaining
-   * @throws Graphite_ConfigurationException if info[hostname] is not defined
+   * @throws Graphite_ConfigurationException if info[prefix] is not defined
    */
   public function service ($service, $data) {
-    if (!isset($this->info['hostname'])) {
+    if (!isset($this->info['prefix'])) {
       throw new Graphite_ConfigurationException(
-          "Hostname must be defined for services");
+          "Prefix must be defined for services");
     }
     $this->service = array('service' => $service, 'data' => $data);
     return $this;
@@ -113,7 +113,7 @@ class Graphite_GraphBuilder {
     }
     $defaults = array();
     if ($this->service) {
-      $defaults['data'] = "{$this->info['hostname']}." .
+      $defaults['data'] = "{$this->info['prefix']}." .
           "{$this->service['service']}.{$this->service['data']}.{$name}";
     }
     $this->series[$name] = array_merge($defaults, $opts);
